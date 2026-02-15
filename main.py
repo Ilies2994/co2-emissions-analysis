@@ -2,6 +2,8 @@
 main.py - Script principal du pipeline d'analyse CO2
 Auteur: CHALABI Mohammed Ilies
 """
+import matplotlib
+matplotlib.use('Agg')
 
 import warnings
 warnings.filterwarnings('ignore')
