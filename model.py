@@ -84,6 +84,7 @@ class CO2PredictionModel:
     
     def evaluate_all(self, X_test, y_test):
         """Evalue tous les modeles"""
+        self._last_X_test = X_test
         print("\n--- Resultats ---")
         
         for name, model in self.models.items():
@@ -97,20 +98,35 @@ class CO2PredictionModel:
         
         return self.results
     
-    def plot_predictions_comparison(self, y_test):
-        """Compare les predictions des modeles"""
+    def plot_predictions_comparison(self, y_test, X_test=None):
+        """Compare les predictions des modeles vs valeurs reelles"""
+        if X_test is None:
+            X_test = self._last_X_test
+
         fig, axes = plt.subplots(1, len(self.models), figsize=(5*len(self.models), 5))
         if len(self.models) == 1:
             axes = [axes]
-        
+
         for ax, (name, model) in zip(axes, self.models.items()):
-            # on recupere X_test via le scaler (pas ideal mais bon)
-            pass
-        
-        # version simplifiée : juste le bar chart des R2
+            y_pred = model.predict(X_test)
+            ax.scatter(y_test, y_pred, alpha=0.3, s=10)
+            # ligne diagonale parfaite
+            lims = [min(y_test.min(), y_pred.min()), max(y_test.max(), y_pred.max())]
+            ax.plot(lims, lims, 'r--', linewidth=1)
+            ax.set_xlabel('Valeurs réelles')
+            ax.set_ylabel('Prédictions')
+            r2 = self.results[name]['R2']
+            ax.set_title(f'{name}\nR²={r2:.4f}')
+
+        plt.suptitle('Prédictions vs Réalité', fontsize=14)
+        plt.tight_layout()
+        plt.savefig('Figures/predictions_comparison.png', dpi=200)
+        plt.show()
+
+        # Bar chart des R2
         names = list(self.results.keys())
         r2s = [self.results[n]['R2'] for n in names]
-        
+
         plt.figure(figsize=(8, 5))
         colors = ['#3498db', '#2ecc71', '#e74c3c']
         plt.bar(names, r2s, color=colors[:len(names)])

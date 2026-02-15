@@ -4,6 +4,8 @@ Auteur: CHALABI Mohammed Ilies
 """
 import matplotlib
 matplotlib.use('Agg')
+import warnings
+warnings.filterwarnings('ignore')
 
 import os
 import pandas as pd
@@ -124,7 +126,7 @@ def main():
     X_train, X_test, y_train, y_test, features = model.prepare_data(df_final)
     model.train_all(X_train, y_train)
     model.evaluate_all(X_test, y_test)
-    model.plot_predictions_comparison(y_test)
+    model.plot_predictions_comparison(y_test, X_test)
     model.plot_feature_importance(features)
     
     # 6. Evaluation
