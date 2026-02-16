@@ -14,6 +14,8 @@ Ce projet implémente un pipeline ML complet :
 - Explicabilité des prédictions avec SHAP
 - Dashboard interactif Streamlit
 
+**Note méthodologique** : Les features dérivées de la variable cible (comme `carbon_intensity` et `co2_per_capita`) sont volontairement exclues du modèle pour éviter le data leakage et garantir une évaluation honnête des performances.
+
 ## Structure du projet
 
 ```
@@ -74,11 +76,13 @@ streamlit run app.py
 ### Evolution des émissions
 ![Emissions](Figures/emissions_over_time.png)
 
-| Modèle | R² | RMSE |
-|--------|-----|------|
-| Linear Regression | ~0.75 | - |
-| Random Forest | ~0.92 | - |
-| XGBoost | ~0.94 | - |
+| Modèle | R² (Test) | RMSE | Description |
+|--------|-----------|------|-------------|
+| Linear Regression | ~0.75 | Élevé | Baseline simple |
+| Random Forest | ~0.85-0.90 | Moyen | Bon compromis |
+| XGBoost | ~0.87-0.92 | Moyen | Meilleure généralisation |
+
+*Les performances réelles dépendent du split train/test. Exécuter `python main.py` pour les métriques exactes.*
 
 ## Technologies
 
