@@ -25,8 +25,8 @@ class CO2PredictionModel:
                        'energy_use_per_capita', 'years_since_start']
         
         # ajouter les colonnes optionnelles
-        optional = ['carbon_intensity', 'co2_per_capita', 'renewable_energy_pct',
-                    'forest_area_pct', 'country_encoded']
+        # Note: carbon_intensity et co2_per_capita exclus car dérivés de la target (data leakage)
+        optional = ['renewable_energy_pct', 'forest_area_pct', 'country_encoded']
         
         # encoder country si pas fait
         if 'country_encoded' not in df.columns and 'country' in df.columns:
