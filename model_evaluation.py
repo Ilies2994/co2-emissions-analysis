@@ -173,12 +173,20 @@ class ModelEvaluator:
         metrics_list = []
         for name, model in self.models.items():
             y_pred = model.predict(X_test)
+            
+            # MAPE robuste : exclure les valeurs où y_test est proche de 0
+            mask = np.abs(y_test) > 1e-3
+            if mask.sum() > 0:
+                mape = np.mean(np.abs((y_test[mask] - y_pred[mask]) / y_test[mask])) * 100
+            else:
+                mape = np.nan
+            
             metrics_list.append({
                 'Model': name,
                 'R2': r2_score(y_test, y_pred),
                 'RMSE': np.sqrt(mean_squared_error(y_test, y_pred)),
                 'MAE': mean_absolute_error(y_test, y_pred),
-                'MAPE': mean_absolute_percentage_error(y_test, y_pred) * 100
+                'MAPE': mape
             })
         
         df = pd.DataFrame(metrics_list).sort_values('R2', ascending=False)
