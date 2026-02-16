@@ -5,9 +5,6 @@ Auteur: CHALABI Mohammed Ilies
 import matplotlib
 matplotlib.use('Agg')
 
-import warnings
-warnings.filterwarnings('ignore')
-
 import os
 import pandas as pd
 import numpy as np
