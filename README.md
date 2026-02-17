@@ -11,6 +11,7 @@ Ce projet implémente un pipeline ML complet :
 - Réduction de dimensionnalité (PCA)
 - Modélisation avec 3 algorithmes (Linear Regression, Random Forest, XGBoost)
 - Évaluation par cross-validation et learning curves
+- Analyse des résidus
 - Explicabilité des prédictions avec SHAP
 - Dashboard interactif Streamlit
 
@@ -70,19 +71,22 @@ streamlit run app.py
 ### Cross-Validation
 ![Cross-validation](Figures/cv_comparison.png)
 
+### Feature Importance
+![Feature Importance](Figures/feature_importance.png)
+
 ### Analyse PCA
 ![PCA](Figures/pca_analysis.png)
 
 ### Evolution des émissions
 ![Emissions](Figures/emissions_over_time.png)
 
-| Modèle | R² (Test) | RMSE | Description |
-|--------|-----------|------|-------------|
-| Linear Regression | ~0.75 | Élevé | Baseline simple |
-| Random Forest | ~0.85-0.90 | Moyen | Bon compromis |
-| XGBoost | ~0.87-0.92 | Moyen | Meilleure généralisation |
+| Modèle | R² (Test) | RMSE | MAE |
+|--------|-----------|------|-----|
+| Random Forest | 0.999 | 47 | 11 |
+| XGBoost | 0.991 | 117 | 24 |
+| Linear Regression | 0.053 | 1229 | 403 |
 
-*Les performances réelles dépendent du split train/test. Exécuter `python main.py` pour les métriques exactes.*
+> **Note** : Le R² élevé des modèles tree-based s'explique par la feature `country_encoded` qui capture les profils d'émissions spécifiques à chaque pays. Linear Regression ne peut pas capturer ces patterns non-linéaires.
 
 ## Technologies
 
